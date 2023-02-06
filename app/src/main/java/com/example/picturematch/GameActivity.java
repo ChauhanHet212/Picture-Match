@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -112,7 +113,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             cover[i].setVisibility(View.VISIBLE);
                         }
                     }
-                }, 5000);
+                }, 4000);
 
                 if (i == 2) {
                     seekBar.setMax(30);
@@ -120,10 +121,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     seekBar.setMax(5);
                 }
                 Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    int j = 6;
+                Runnable runnable = new Runnable() {
+                    int j = 5;
                     int k = -1;
-
                     @Override
                     public void run() {
                         if (j > 0) {
@@ -140,10 +140,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 dialog1.setCancelable(false);
                                 dialog1.setContentView(R.layout.time_out_dialog);
 
-                                Button cancel, ok;
-
-                                cancel = dialog1.findViewById(R.id.over_cancel);
-                                cancel.setOnClickListener(new View.OnClickListener() {
+                                ((Button)dialog1.findViewById(R.id.over_cancel)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
@@ -151,15 +148,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 });
 
-                                ok = dialog1.findViewById(R.id.over_ok);
-                                ok.setOnClickListener(new View.OnClickListener() {
+                                ((Button)dialog1.findViewById(R.id.over_ok)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
                                         recreate();
                                     }
                                 });
-                                dialog1.show();
+                                if (!isFinishing()) {
+                                    dialog1.show();
+                                }
                             }
                         } else if (i == 3) {
                             if (k == 5) {
@@ -167,10 +165,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 dialog1.setCancelable(false);
                                 dialog1.setContentView(R.layout.time_out_dialog);
 
-                                Button cancel, ok;
-
-                                cancel = dialog1.findViewById(R.id.over_cancel);
-                                cancel.setOnClickListener(new View.OnClickListener() {
+                                ((Button)dialog1.findViewById(R.id.over_cancel)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
@@ -178,24 +173,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 });
 
-                                ok = dialog1.findViewById(R.id.over_ok);
-                                ok.setOnClickListener(new View.OnClickListener() {
+                                ((Button)dialog1.findViewById(R.id.over_ok)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
                                         recreate();
                                     }
                                 });
-                                dialog1.show();
+                                if (!isFinishing()) {
+                                    dialog1.show();
+                                }
                             }
                         }
                         handler.postDelayed(this::run, 1000);
                     }
-                });
+                };
+                handler.post(runnable);
             }
         });
         dialog.show();
-
     }
 
     @Override
