@@ -28,24 +28,31 @@ public class LevelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level);
 
+        infoBtn = findViewById(R.id.infoBtn);
+        levelRecycler = findViewById(R.id.levelRecycler);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Select level");
 
         int i = getIntent().getIntExtra("key", 0);
         if (i == 1){
             getSupportActionBar().setSubtitle("NO TIME LIMIT");
+            levelRecycler.setLayoutManager(new LinearLayoutManager(LevelActivity.this));
+            levelAdapter = new LevelAdapter(LevelActivity.this, 1);
+            levelRecycler.setAdapter(levelAdapter);
         } else if (i == 2){
             getSupportActionBar().setSubtitle("NORMAL");
+            levelRecycler.setLayoutManager(new LinearLayoutManager(LevelActivity.this));
+            levelAdapter = new LevelAdapter(LevelActivity.this, 2);
+            levelRecycler.setAdapter(levelAdapter);
         } else if (i == 3){
             getSupportActionBar().setSubtitle("HARD");
+            levelRecycler.setLayoutManager(new LinearLayoutManager(LevelActivity.this));
+            levelAdapter = new LevelAdapter(LevelActivity.this, 3);
+            levelRecycler.setAdapter(levelAdapter);
         }
 
-        infoBtn = findViewById(R.id.infoBtn);
-        levelRecycler = findViewById(R.id.levelRecycler);
 
-        levelRecycler.setLayoutManager(new LinearLayoutManager(LevelActivity.this));
-        levelAdapter = new LevelAdapter(LevelActivity.this);
-        levelRecycler.setAdapter(levelAdapter);
 
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override

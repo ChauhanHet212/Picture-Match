@@ -7,11 +7,12 @@
     tools:context=".GameActivity">
 
     <SeekBar
+        android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/grid"
-        android:layout_alignParentTop="true"
-        android:clickable="false" />
+        android:thumb="@android:color/transparent"
+        android:layout_alignParentTop="true" />
 
     <GridLayout
         android:id="@+id/grid"
