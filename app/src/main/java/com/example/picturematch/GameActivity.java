@@ -88,12 +88,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
                         list2.add(i);
 
-                        img[j].setBackground(getResources().getDrawable(R.drawable.flipedimg_bg));
                         img[j].setImageResource(IMAGES[i]);
                         cover[j].setTag(l);
                         list1.add(j);
 
-                        img[k].setBackground(getResources().getDrawable(R.drawable.flipedimg_bg));
                         img[k].setImageResource(IMAGES[i]);
                         cover[k].setTag(l);
                         list1.add(k);
@@ -266,7 +264,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             this.finish();
         }
