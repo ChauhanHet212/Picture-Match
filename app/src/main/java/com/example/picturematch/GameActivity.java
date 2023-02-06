@@ -24,6 +24,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ImageView[] cover = new ImageView[12];
     List<Integer> list1 = new ArrayList<>();
     List<Integer> list2 = new ArrayList<>();
+    Handler handler;
+    Runnable runnable;
+    boolean win = false;
     int click = 1;
     int i;
     int pos;
@@ -118,8 +121,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (i == 3) {
                     seekBar.setMax(5);
                 }
-                Handler handler = new Handler();
-                Runnable runnable = new Runnable() {
+                handler = new Handler();
+                runnable = new Runnable() {
                     int j = 5;
                     int k = -1;
                     @Override
@@ -153,7 +156,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                         recreate();
                                     }
                                 });
-                                if (!isFinishing()) {
+                                if (!isFinishing() && !win) {
                                     dialog1.show();
                                 }
                             }
@@ -178,7 +181,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                         recreate();
                                     }
                                 });
-                                if (!isFinishing()) {
+                                if (!isFinishing() && !win) {
                                     dialog1.show();
                                 }
                             }
@@ -244,6 +247,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (check == 12) {
+            win = true;
             Dialog dialog = new Dialog(GameActivity.this);
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.win_dialog);
