@@ -12,26 +12,29 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.picturematch.Adapters.RecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class GameActivity extends AppCompatActivity {
 
+    RecyclerView recycler;
+    RecyclerAdapter recyclerAdapter;
     SeekBar seekBar;
-    ImageView[] img = new ImageView[12];
-    ImageView[] cover = new ImageView[12];
     TextView time_txtv;
     List<Integer> list1 = new ArrayList<>();
     List<Integer> list2 = new ArrayList<>();
+    List<Integer> imglist = new ArrayList<>();
     Handler handler;
     Runnable runnable;
-    boolean win = false;
-    int click = 1;
+    public static boolean win = false;
     int i;
-    int pos;
     int check1, check2;
     public static final int[] IMAGES = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e,
             R.drawable.f, R.drawable.g, R.drawable.h, R.drawable.i, R.drawable.j};
@@ -43,6 +46,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         time_txtv = findViewById(R.id.time_txtv);
+        recycler = findViewById(R.id.recycler);
+
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
+        imglist.add(1);
 
         i = getIntent().getIntExtra("level_type", 0);
 
@@ -57,20 +74,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setTitle("HARD");
             seekBar.setVisibility(View.VISIBLE);
         }
-
-
-        for (int i = 0; i < 12; i++) {
-            int id = getResources().getIdentifier("img" + i, "id", getPackageName());
-            img[i] = findViewById(id);
-        }
-
-        for (int i = 0; i < 12; i++) {
-            int id = getResources().getIdentifier("cover" + i, "id", getPackageName());
-            cover[i] = findViewById(id);
-            cover[i].setVisibility(View.INVISIBLE);
-            cover[i].setOnClickListener(this);
-        }
-
 
         Dialog dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.ntl_info_dialog);
@@ -94,8 +97,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 dialog.dismiss();
 
-
-                int l = 1;
                 while (true) {
                     int i = new Random().nextInt(IMAGES.length);
                     int j = new Random().nextInt(12);
@@ -103,15 +104,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
                         list2.add(i);
 
-                        img[j].setImageResource(IMAGES[i]);
-                        cover[j].setTag(l);
+                        imglist.set(j ,IMAGES[i]);
                         list1.add(j);
-
-                        img[k].setImageResource(IMAGES[i]);
-                        cover[k].setTag(l);
+                        imglist.set(k ,IMAGES[i]);
                         list1.add(k);
-
-                        l++;
 
                         if (list2.size() >= 6) {
                             break;
@@ -119,14 +115,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 12; i++) {
-                            cover[i].setVisibility(View.VISIBLE);
-                        }
-                    }
-                }, 4000);
+                recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
+                recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 3));
+                recycler.setAdapter(recyclerAdapter);
 
                 if (i == 2) {
                     seekBar.setMax(30);
@@ -215,77 +206,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialog.show();
-    }
-
-    @Override
-    public void onClick(View view) {
-        for (int i = 0; i < 12; i++) {
-            checkWin();
-            if (view.getId() == cover[i].getId()) {
-                if (click == 1) {
-                    cover[i].setVisibility(View.INVISIBLE);
-                    click = 3;
-                    pos = i;
-                    check1 = Integer.parseInt(cover[i].getTag().toString());
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            click = 2;
-                        }
-                    }, 100);
-                } else if (click == 2) {
-                    cover[i].setVisibility(View.INVISIBLE);
-                    click = 3;
-                    check2 = Integer.parseInt(cover[i].getTag().toString());
-                    if (check1 == check2) {
-                        cover[i].setClickable(false);
-                        cover[pos].setClickable(false);
-                        click = 1;
-                    } else {
-                        int finalI = i;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                cover[finalI].setVisibility(View.VISIBLE);
-                                cover[pos].setVisibility(View.VISIBLE);
-                                click = 1;
-                            }
-                        }, 500);
-                    }
-                }
-                checkWin();
-            }
-        }
-
-    }
-
-    public void checkWin() {
-        int check = 0;
-        for (int i = 0; i < 12; i++) {
-            if (!cover[i].isClickable()) {
-                check++;
-            }
-        }
-
-        if (check == 12) {
-            win = true;
-            Dialog dialog = new Dialog(GameActivity.this);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.win_dialog);
-
-            Button win_okBtn = dialog.findViewById(R.id.win_okBtn);
-
-            win_okBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    finish();
-                }
-            });
-
-            dialog.show();
-        }
     }
 
     @Override
