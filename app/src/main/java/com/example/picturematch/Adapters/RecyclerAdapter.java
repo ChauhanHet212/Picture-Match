@@ -59,7 +59,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     holder.cover.setVisibility(View.INVISIBLE);
                     click = 3;
                     view1 = holder.cover;
-//                    check1 = Integer.parseInt(cover[i].getTag().toString());
                     pos1 = holder.getAdapterPosition();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -70,7 +69,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 } else if (click == 2) {
                     holder.cover.setVisibility(View.INVISIBLE);
                     click = 3;
-//                    check2 = Integer.parseInt(cover[i].getTag().toString());
                     pos2 = holder.getAdapterPosition();
                     if (img.get(pos1).equals(img.get(pos2))) {
                         holder.cover.setClickable(false);
