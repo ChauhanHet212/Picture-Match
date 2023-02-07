@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     SeekBar seekBar;
     ImageView[] img = new ImageView[12];
     ImageView[] cover = new ImageView[12];
+    TextView time_txtv;
     List<Integer> list1 = new ArrayList<>();
     List<Integer> list2 = new ArrayList<>();
     Handler handler;
@@ -40,21 +42,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        time_txtv = findViewById(R.id.time_txtv);
 
         i = getIntent().getIntExtra("level_type", 0);
 
         seekBar = findViewById(R.id.seekBar);
         if (i == 1) {
             getSupportActionBar().setTitle("NO TIME LIMIT");
-            getSupportActionBar().setSubtitle("Time :- no limit");
             seekBar.setVisibility(View.GONE);
-        } else if (i == 2){
+        } else if (i == 2) {
             getSupportActionBar().setTitle("NORMAL");
-            getSupportActionBar().setSubtitle("Time :- 30s");
             seekBar.setVisibility(View.VISIBLE);
-        } else if (i == 3){
+        } else if (i == 3) {
             getSupportActionBar().setTitle("HARD");
-            getSupportActionBar().setSubtitle("Time :- 5s");
             seekBar.setVisibility(View.VISIBLE);
         }
 
@@ -77,6 +77,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         dialog.setCancelable(false);
 
         Button ntl_go = dialog.findViewById(R.id.ntl_go);
+        TextView info_title = dialog.findViewById(R.id.info_tital);
+
+        if (i == 1) {
+            info_title.setText("TIME: NO TIME LIMIT");
+            time_txtv.setText("No Limit");
+        } else if (i == 2) {
+            info_title.setText("TIME: 30 s");
+            time_txtv.setText("0/30");
+        } else if (i == 3) {
+            info_title.setText("TIME: 5 s");
+            time_txtv.setText("0/5");
+        }
         ntl_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,6 +137,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 runnable = new Runnable() {
                     int j = 5;
                     int k = -1;
+
                     @Override
                     public void run() {
                         if (j > 0) {
@@ -134,6 +147,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         if (j == 0) {
                             k++;
                             seekBar.setProgress(k);
+                            if (i == 2) {
+                                if (k <= 30) {
+                                    time_txtv.setText(k + "/30");
+                                }
+                            } else if (i == 3) {
+                                if (k <= 5) {
+                                    time_txtv.setText(k + "/5");
+                                }
+                            }
                         }
                         if (i == 2) {
                             if (k == 30) {
@@ -141,7 +163,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 dialog1.setCancelable(false);
                                 dialog1.setContentView(R.layout.time_out_dialog);
 
-                                ((Button)dialog1.findViewById(R.id.over_cancel)).setOnClickListener(new View.OnClickListener() {
+                                ((Button) dialog1.findViewById(R.id.over_cancel)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
@@ -149,7 +171,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 });
 
-                                ((Button)dialog1.findViewById(R.id.over_ok)).setOnClickListener(new View.OnClickListener() {
+                                ((Button) dialog1.findViewById(R.id.over_ok)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
@@ -166,7 +188,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 dialog1.setCancelable(false);
                                 dialog1.setContentView(R.layout.time_out_dialog);
 
-                                ((Button)dialog1.findViewById(R.id.over_cancel)).setOnClickListener(new View.OnClickListener() {
+                                ((Button) dialog1.findViewById(R.id.over_cancel)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();
@@ -174,7 +196,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 });
 
-                                ((Button)dialog1.findViewById(R.id.over_ok)).setOnClickListener(new View.OnClickListener() {
+                                ((Button) dialog1.findViewById(R.id.over_ok)).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         dialog1.dismiss();

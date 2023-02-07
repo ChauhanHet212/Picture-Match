@@ -5,13 +5,36 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <TextView
+        android:id="@+id/t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="8dp"
+        android:text="Time :-"
+        android:textSize="20sp"
+        android:textColor="@color/purple_500"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/time_txtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/t"
+        android:padding="8dp"
+        android:text="3/30"
+        android:textSize="20sp"
+        android:textColor="@color/purple_500"/>
+
     <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/grid"
-        android:thumb="@android:color/transparent"
-        android:layout_alignParentTop="true" />
+        android:padding="25dp"
+        android:thumb="@android:color/transparent" />
+
 
     <GridLayout
         android:id="@+id/grid"
