@@ -34,8 +34,8 @@ public class GameActivity extends AppCompatActivity {
     Handler handler;
     Runnable runnable;
     public static boolean win = false;
-    int i;
-    int check1, check2;
+    public static boolean plus = false;
+    int i, l, max;
     public static final int[] IMAGES = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e,
             R.drawable.f, R.drawable.g, R.drawable.h, R.drawable.i, R.drawable.j};
 
@@ -48,20 +48,22 @@ public class GameActivity extends AppCompatActivity {
         time_txtv = findViewById(R.id.time_txtv);
         recycler = findViewById(R.id.recycler);
 
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-        imglist.add(1);
-
+        l = getIntent().getIntExtra("pos", 0);
         i = getIntent().getIntExtra("level_type", 0);
+
+        if (l <= 3) {
+            for (int j = 0; j < 12; j++) {
+                imglist.add(j);
+            }
+        } else if (l > 3 && l <= 6) {
+            for (int j = 0; j < 16; j++) {
+                imglist.add(j);
+            }
+        } else if (l > 6) {
+            for (int j = 0; j < 20; j++) {
+                imglist.add(j);
+            }
+        }
 
         seekBar = findViewById(R.id.seekBar);
         if (i == 1) {
@@ -98,31 +100,77 @@ public class GameActivity extends AppCompatActivity {
                 dialog.dismiss();
 
                 while (true) {
-                    int i = new Random().nextInt(IMAGES.length);
-                    int j = new Random().nextInt(12);
-                    int k = new Random().nextInt(12);
-                    if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
-                        list2.add(i);
+                    if (l <= 3) {
+                        int i = new Random().nextInt(IMAGES.length);
+                        int j = new Random().nextInt(12);
+                        int k = new Random().nextInt(12);
+                        if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
+                            list2.add(i);
 
-                        imglist.set(j ,IMAGES[i]);
-                        list1.add(j);
-                        imglist.set(k ,IMAGES[i]);
-                        list1.add(k);
+                            imglist.set(j ,IMAGES[i]);
+                            list1.add(j);
+                            imglist.set(k ,IMAGES[i]);
+                            list1.add(k);
 
-                        if (list2.size() >= 6) {
-                            break;
+                            if (list2.size() >= 6) {
+                                break;
+                            }
+                        }
+                    } else if (l > 3 && l <= 6){
+                        int i = new Random().nextInt(IMAGES.length);
+                        int j = new Random().nextInt(16);
+                        int k = new Random().nextInt(16);
+                        if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
+                            list2.add(i);
+
+                            imglist.set(j ,IMAGES[i]);
+                            list1.add(j);
+                            imglist.set(k ,IMAGES[i]);
+                            list1.add(k);
+
+                            if (list2.size() >= 8) {
+                                break;
+                            }
+                        }
+                    } else if (l > 6) {
+                        int i = new Random().nextInt(IMAGES.length);
+                        int j = new Random().nextInt(20);
+                        int k = new Random().nextInt(20);
+                        if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
+                            list2.add(i);
+
+                            imglist.set(j ,IMAGES[i]);
+                            list1.add(j);
+                            imglist.set(k ,IMAGES[i]);
+                            list1.add(k);
+
+                            if (list2.size() >= 10) {
+                                break;
+                            }
                         }
                     }
                 }
 
-                recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
-                recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 3));
-                recycler.setAdapter(recyclerAdapter);
+                if (l <= 3) {
+                    recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
+                    recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 3));
+                    recycler.setAdapter(recyclerAdapter);
+                } else if (l > 3 && l <= 6){
+                    recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
+                    recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 4));
+                    recycler.setAdapter(recyclerAdapter);
+                } else if (l > 6){
+                    recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
+                    recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 4));
+                    recycler.setAdapter(recyclerAdapter);
+                }
 
                 if (i == 2) {
-                    seekBar.setMax(30);
+                    max = 30;
+                    seekBar.setMax(max);
                 } else if (i == 3) {
-                    seekBar.setMax(5);
+                    max = 5;
+                    seekBar.setMax(max);
                 }
                 handler = new Handler();
                 runnable = new Runnable() {
@@ -137,19 +185,29 @@ public class GameActivity extends AppCompatActivity {
                         }
                         if (j == 0) {
                             k++;
-                            seekBar.setProgress(k);
                             if (i == 2) {
-                                if (k <= 30) {
-                                    time_txtv.setText(k + "/30");
+                                if (k <= max) {
+                                    if (plus){
+                                        plus = false;
+                                        max = max + 5;
+                                        seekBar.setMax(max);
+                                    }
+                                    time_txtv.setText(k + "/" + max);
                                 }
                             } else if (i == 3) {
-                                if (k <= 5) {
-                                    time_txtv.setText(k + "/5");
+                                if (k <= max) {
+                                    if (plus){
+                                        plus = false;
+                                        max = max + 5;
+                                        seekBar.setMax(max);
+                                    }
+                                    time_txtv.setText(k + "/" + max);
                                 }
                             }
+                            seekBar.setProgress(k);
                         }
                         if (i == 2) {
-                            if (k == 30) {
+                            if (k == max) {
                                 Dialog dialog1 = new Dialog(GameActivity.this);
                                 dialog1.setCancelable(false);
                                 dialog1.setContentView(R.layout.time_out_dialog);
@@ -174,7 +232,7 @@ public class GameActivity extends AppCompatActivity {
                                 }
                             }
                         } else if (i == 3) {
-                            if (k == 5) {
+                            if (k == max) {
                                 Dialog dialog1 = new Dialog(GameActivity.this);
                                 dialog1.setCancelable(false);
                                 dialog1.setContentView(R.layout.time_out_dialog);

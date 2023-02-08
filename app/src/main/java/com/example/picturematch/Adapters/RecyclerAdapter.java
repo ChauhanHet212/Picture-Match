@@ -1,5 +1,6 @@
 package com.example.picturematch.Adapters;
 
+import static com.example.picturematch.GameActivity.plus;
 import static com.example.picturematch.GameActivity.win;
 
 import android.app.Activity;
@@ -75,6 +76,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         view1.setClickable(false);
                         click = 1;
                         check ++;
+                        plus = true;
                         if (check == (img.size()/2)){
                             win = true;
                             Dialog dialog1 = new Dialog(activity);
