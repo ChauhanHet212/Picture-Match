@@ -95,7 +95,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                             dialog1.show();
                         }
-                        System.out.println(check);
                     } else {
                         new Handler().postDelayed(new Runnable() {
                             @Override

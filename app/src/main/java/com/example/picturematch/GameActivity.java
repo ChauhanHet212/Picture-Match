@@ -102,9 +102,9 @@ public class GameActivity extends AppCompatActivity {
                 while (true) {
                     if (l <= 3) {
                         int i = new Random().nextInt(IMAGES.length);
-                        int j = new Random().nextInt(12);
-                        int k = new Random().nextInt(12);
-                        if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
+                        int j = new Random().nextInt(6);
+                        int k = new Random().nextInt(12 - 6) + 6;
+                        if (!list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
                             list2.add(i);
 
                             imglist.set(j ,IMAGES[i]);
@@ -116,11 +116,11 @@ public class GameActivity extends AppCompatActivity {
                                 break;
                             }
                         }
-                    } else if (l > 3 && l <= 6){
+                    } else if (l <= 6){
                         int i = new Random().nextInt(IMAGES.length);
-                        int j = new Random().nextInt(16);
-                        int k = new Random().nextInt(16);
-                        if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
+                        int j = new Random().nextInt(8);
+                        int k = new Random().nextInt(16 - 8) + 8;
+                        if (!list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
                             list2.add(i);
 
                             imglist.set(j ,IMAGES[i]);
@@ -132,11 +132,11 @@ public class GameActivity extends AppCompatActivity {
                                 break;
                             }
                         }
-                    } else if (l > 6) {
+                    } else {
                         int i = new Random().nextInt(IMAGES.length);
-                        int j = new Random().nextInt(20);
-                        int k = new Random().nextInt(20);
-                        if (j != k && !list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
+                        int j = new Random().nextInt(10);
+                        int k = new Random().nextInt(20 - 10) + 10;
+                        if (!list1.contains(j) && !list1.contains(k) && !list2.contains(i)) {
                             list2.add(i);
 
                             imglist.set(j ,IMAGES[i]);
