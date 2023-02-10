@@ -55,11 +55,11 @@ public class GameActivity extends AppCompatActivity {
             for (int j = 0; j < 12; j++) {
                 imglist.add(j);
             }
-        } else if (l > 3 && l <= 6) {
+        } else if (l <= 6) {
             for (int j = 0; j < 16; j++) {
                 imglist.add(j);
             }
-        } else if (l > 6) {
+        } else {
             for (int j = 0; j < 20; j++) {
                 imglist.add(j);
             }
@@ -155,11 +155,11 @@ public class GameActivity extends AppCompatActivity {
                     recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
                     recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 3));
                     recycler.setAdapter(recyclerAdapter);
-                } else if (l > 3 && l <= 6){
+                } else if (l <= 6){
                     recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
                     recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 4));
                     recycler.setAdapter(recyclerAdapter);
-                } else if (l > 6){
+                } else {
                     recyclerAdapter = new RecyclerAdapter(GameActivity.this, imglist);
                     recycler.setLayoutManager(new GridLayoutManager(GameActivity.this, 4));
                     recycler.setAdapter(recyclerAdapter);
