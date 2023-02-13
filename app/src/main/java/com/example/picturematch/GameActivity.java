@@ -183,7 +183,7 @@ public class GameActivity extends AppCompatActivity {
                             j--;
                             seekBar.setProgress(j);
                         }
-                        if (j == 0) {
+                        if (j == 0 && !win) {
                             k++;
                             if (i == 2) {
                                 if (k <= max) {
